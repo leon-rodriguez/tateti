@@ -5,7 +5,7 @@
   background-color: #fff6ec;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
   display: grid;
-  grid-template-rows: 1fr 6fr 2fr;
+  grid-template-rows: 101px 80px 4fr 3fr;
 }
 
 .tittleContainer {
@@ -24,6 +24,32 @@
 .tittleContainer h1 {
   font-size: 60px;
   color: #2e2e2e;
+}
+
+.containerOptions {
+  display: flex;
+  justify-content: center;
+}
+.containerOptions button {
+  background-color: transparent;
+  width: 130px;
+  height: 70px;
+  color: #000;
+  transition: 0.3s ease all;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.button1v1 {
+  border: none;
+  /* border-bottom: 3px solid #aa8f66; */
+  margin-right: 10px;
+}
+
+.buttonPc {
+  border: none;
+  /* border-bottom: 3px solid #aa8f66; */
 }
 
 .flex {
@@ -87,7 +113,7 @@
   margin-left: 10px;
 }
 
-button {
+.playAgain {
   background-color: transparent;
   border: 3px solid #aa8f66;
   margin: 0 auto;
@@ -104,6 +130,9 @@ button:hover {
 }
 
 @media screen and (max-width: 1480px) {
+  .container {
+    grid-template-rows: 71px 80px 4fr 3fr;
+  }
   .containerTateti {
     height: 400px;
     width: 400px;

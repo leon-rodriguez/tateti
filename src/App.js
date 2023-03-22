@@ -1,191 +1,44 @@
 import { useState, useRef, useEffect } from 'react';
+import Human from './Human';
+import Pc from './Pc';
 import './App.css';
 
 function App() {
-  const emptyBoard = {
-    a1: null,
-    a2: null,
-    a3: null,
-    b1: null,
-    b2: null,
-    b3: null,
-    c1: null,
-    c2: null,
-    c3: null,
-  };
+  const [mode, setMode] = useState(1);
 
-  const [board, setBoard] = useState(emptyBoard);
-  const [winner, setWinner] = useState('');
-  let currentPlayer = useRef(1);
-  let count = useRef(0);
-  const isOver = useRef(false);
+  // const changeMode = () =>{
 
-  const handleClick = (cell) => {
-    if (!isOver.current && board[cell] == null) {
-      count.current += 1;
-      if (currentPlayer.current == 1) {
-        setBoard({ ...board, [cell]: 1 });
-        currentPlayer.current = 2;
-        console.log(board[cell]);
-      } else {
-        setBoard({ ...board, [cell]: 10 });
-        currentPlayer.current = 1;
-      }
-    } else {
-      return null;
-    }
-  };
-
-  const restartGame = () => {
-    setWinner('');
-    currentPlayer.current = 1;
-    count.current = 0;
-    isOver.current = false;
-    setBoard(emptyBoard);
-  };
-
-  useEffect(() => {
-    if (count.current > 3) {
-      //comparacion horizontal
-      if (board.a1 + board.a2 + board.a3 == 3) {
-        isOver.current = true;
-        setWinner('X');
-        return;
-      } else if (board.a1 + board.a2 + board.a3 == 30) {
-        isOver.current = true;
-        setWinner('O');
-        return;
-      }
-      if (board.b1 + board.b2 + board.b3 == 3) {
-        isOver.current = true;
-        setWinner('X');
-        return;
-      } else if (board.b1 + board.b2 + board.b3 == 30) {
-        isOver.current = true;
-        setWinner('O');
-        return;
-      }
-      if (board.c1 + board.c2 + board.c3 == 3) {
-        isOver.current = true;
-        setWinner('X');
-        return;
-      } else if (board.c1 + board.c2 + board.c3 == 30) {
-        isOver.current = true;
-        setWinner('O');
-        return;
-      }
-
-      //comparacion vertical
-      if (board.a1 + board.b1 + board.c1 == 3) {
-        isOver.current = true;
-        setWinner('X');
-        return;
-      } else if (board.a1 + board.b1 + board.c1 == 30) {
-        isOver.current = true;
-        setWinner('O');
-        return;
-      }
-      if (board.a2 + board.b2 + board.c2 == 3) {
-        isOver.current = true;
-        setWinner('X');
-        return;
-      } else if (board.a2 + board.b2 + board.c2 == 30) {
-        isOver.current = true;
-        setWinner('O');
-        return;
-      }
-      if (board.a3 + board.b3 + board.c3 == 3) {
-        isOver.current = true;
-        setWinner('X');
-        return;
-      } else if (board.a3 + board.b3 + board.c3 == 30) {
-        isOver.current = true;
-        setWinner('O');
-        return;
-      }
-      if (count.current == 9) {
-        setWinner('Empate');
-      }
-      // if (!board.includes(null)) {
-      //   setWinner('Empate');
-      // }
-
-      // Object.entries(board).forEach(([key, value]) => {
-      //   console.log(`key: ${key} value: ${value}`);
-      // });
-    }
-  }, [board]);
+  // }
 
   return (
     <div className="container">
       <div className="tittleContainer">
         <h1 className="tittle">Ta Te Ti</h1>
       </div>
-      <div className="flex">
-        <div className="containerTateti">
-          <Card board={board} text={'a1'} onClick={() => handleClick('a1')} />
-          <Card board={board} text={'a2'} onClick={() => handleClick('a2')} />
-          <Card board={board} text={'a3'} onClick={() => handleClick('a3')} />
-          <Card board={board} text={'b1'} onClick={() => handleClick('b1')} />
-          <Card board={board} text={'b2'} onClick={() => handleClick('b2')} />
-          <Card board={board} text={'b3'} onClick={() => handleClick('b3')} />
-          <Card board={board} text={'c1'} onClick={() => handleClick('c1')} />
-          <Card board={board} text={'c2'} onClick={() => handleClick('c2')} />
-          <Card board={board} text={'c3'} onClick={() => handleClick('c3')} />
-        </div>
-      </div>
-      <div className="footer">
-        <div
-          className="winner"
-          style={{
-            color: winner == 'Empate' ? '#aa8f66' : 'rgb(155, 155, 155)',
+      <div className="containerOptions">
+        <button
+          className="button1v1"
+          onClick={() => {
+            setMode(1);
           }}
+          style={{ borderBottom: mode == 1 ? '3px solid #aa8f66' : 'none' }}
         >
-          {winner == 'Empate'
-            ? 'Empate'
-            : winner == 'X'
-            ? 'El ganador es:'
-            : winner == 'O'
-            ? 'El ganador es:'
-            : ''}
-          <span
-            className="winnerMark"
-            style={{ color: winner == 'X' ? '#ba3b46' : '#01368d' }}
-          >
-            {winner == 'Empate'
-              ? ''
-              : winner == 'X'
-              ? 'X'
-              : winner == 'O'
-              ? 'O'
-              : ''}
-          </span>
-        </div>
-        <button onClick={restartGame}>Jugar de vuelta</button>
+          1 v 1
+        </button>
+        <button
+          className="buttonPc"
+          onClick={() => {
+            setMode(2);
+          }}
+          style={{ borderBottom: mode == 2 ? '3px solid #aa8f66' : 'none' }}
+        >
+          VS PC
+        </button>
       </div>
+      {mode == 1 ? <Human /> : <Pc />}
     </div>
   );
 }
-
-const Card = ({ board, text, onClick }) => {
-  return (
-    <div
-      className="cell"
-      onClick={onClick}
-      style={{
-        color:
-          board[text] == 10
-            ? '#01368d'
-            : board[text] == 1
-            ? '#ba3b46'
-            : 'transparent',
-      }}
-    >
-      {board[text] == 1 ? 'X' : board[text] == 10 ? 'O' : ''}
-    </div>
-  );
-};
-
 export default App;
 
 // function App() {
