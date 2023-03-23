@@ -3,6 +3,10 @@ import Card from './Card';
 import RestartGame from './RestartGame';
 import CheckWinner from './CheckWinner';
 import { CELLS_LIST, EMPTY_BOARD } from './constants';
+import subsistence from './PcModes';
+
+// setBoard({ ...board, [boardOptionsAvailables[random]]: 10 });
+// a usar
 
 const Pc = () => {
   const [board, setBoard] = useState(EMPTY_BOARD);
@@ -29,18 +33,12 @@ const Pc = () => {
       isOver.current = true;
     }
     if (currentPlayer.current === 2 && !isOver.current) {
-      iaChooseCell();
+      const iaCell = subsistence(board, randomNumberInRange);
+      setBoard({ ...board, [iaCell]: 10 });
+      count.current += 1;
       currentPlayer.current = 1;
     }
   }, [board]);
-
-  const iaChooseCell = () => {
-    const boardOptionsAvailables = CELLS_LIST.filter(
-      (item) => board[item] === null
-    );
-    const random = randomNumberInRange(0, boardOptionsAvailables.length - 1);
-    setBoard({ ...board, [boardOptionsAvailables[random]]: 10 });
-  };
 
   const randomNumberInRange = (min, max) => {
     // 👇️ get number between min (inclusive) and max (inclusive)
