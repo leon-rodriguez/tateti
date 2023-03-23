@@ -2,21 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import Card from './Card';
 import RestartGame from './RestartGame';
 import CheckWinner from './CheckWinner';
+import { EMPTY_BOARD, CELLS_LIST } from './constants';
 
 const Human = () => {
-  const emptyBoard = {
-    a1: null,
-    a2: null,
-    a3: null,
-    b1: null,
-    b2: null,
-    b3: null,
-    c1: null,
-    c2: null,
-    c3: null,
-  };
-
-  const [board, setBoard] = useState(emptyBoard);
+  const [board, setBoard] = useState(EMPTY_BOARD);
   const [winner, setWinner] = useState('');
   let currentPlayer = useRef(1);
   let count = useRef(0);
@@ -28,7 +17,7 @@ const Human = () => {
       if (currentPlayer.current == 1) {
         setBoard({ ...board, [cell]: 1 });
         currentPlayer.current = 2;
-        console.log(board[cell]);
+        // console.log(board[cell]);
       } else {
         setBoard({ ...board, [cell]: 10 });
         currentPlayer.current = 1;
@@ -39,22 +28,26 @@ const Human = () => {
   };
 
   useEffect(() => {
-    CheckWinner(count, board, setWinner, isOver);
+    const result = CheckWinner(board, count);
+    // console.log('result ', result);
+    if (result) {
+      setWinner(result);
+      isOver.current = true;
+    }
   }, [board]);
 
   return (
     <>
       <div className="flex">
         <div className="containerTateti">
-          <Card board={board} text={'a1'} onClick={() => handleClick('a1')} />
-          <Card board={board} text={'a2'} onClick={() => handleClick('a2')} />
-          <Card board={board} text={'a3'} onClick={() => handleClick('a3')} />
-          <Card board={board} text={'b1'} onClick={() => handleClick('b1')} />
-          <Card board={board} text={'b2'} onClick={() => handleClick('b2')} />
-          <Card board={board} text={'b3'} onClick={() => handleClick('b3')} />
-          <Card board={board} text={'c1'} onClick={() => handleClick('c1')} />
-          <Card board={board} text={'c2'} onClick={() => handleClick('c2')} />
-          <Card board={board} text={'c3'} onClick={() => handleClick('c3')} />
+          {CELLS_LIST.map((item) => (
+            <Card
+              board={board}
+              text={item}
+              onClick={() => handleClick(item)}
+              key={item}
+            />
+          ))}
         </div>
       </div>
       <div className="footer">
@@ -93,7 +86,7 @@ const Human = () => {
               currentPlayer,
               isOver,
               setBoard,
-              emptyBoard
+              EMPTY_BOARD
             );
           }}
         >

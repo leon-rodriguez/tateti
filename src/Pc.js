@@ -2,24 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import Card from './Card';
 import RestartGame from './RestartGame';
 import CheckWinner from './CheckWinner';
+import { CELLS_LIST, EMPTY_BOARD } from './constants';
 
 const Pc = () => {
-  const emptyBoard = {
-    a1: null,
-    a2: null,
-    a3: null,
-    b1: null,
-    b2: null,
-    b3: null,
-    c1: null,
-    c2: null,
-    c3: null,
-  };
-
-  const boardOptions = ['a1', 'a2', 'a3', 'b1', 'b2', 'b3', 'c1', 'c2', 'c3'];
-  let boardOptionsAvailables = [];
-
-  const [board, setBoard] = useState(emptyBoard);
+  const [board, setBoard] = useState(EMPTY_BOARD);
   const [winner, setWinner] = useState('');
   let currentPlayer = useRef(1);
   let count = useRef(0);
@@ -29,30 +15,31 @@ const Pc = () => {
     if (!isOver.current && board[cell] == null) {
       count.current += 1;
       if (currentPlayer.current == 1) {
-        setBoard({ ...board, [cell]: 1 });
         currentPlayer.current = 2;
-        console.log(board[cell]);
-      } else {
-        // setBoard({ ...board, [cell]: 10 });
-        currentPlayer.current = 1;
-        iaChooseCell();
+        setBoard({ ...board, [cell]: 1 });
+        // console.log(board[cell]);
       }
-    } else {
-      return null;
     }
   };
 
+  useEffect(() => {
+    const result = CheckWinner(board, count);
+    if (result) {
+      setWinner(result);
+      isOver.current = true;
+    }
+    if (currentPlayer.current === 2 && !isOver.current) {
+      iaChooseCell();
+      currentPlayer.current = 1;
+    }
+  }, [board]);
+
   const iaChooseCell = () => {
-    boardOptionsAvailables = [];
-    boardOptions.forEach((item) => {
-      if (board[item] == null) {
-        boardOptionsAvailables.push(item);
-        let random = randomNumberInRange(0, boardOptionsAvailables.length - 1);
-        setBoard({ ...board, [boardOptionsAvailables[random]]: 10 });
-        console.log('la celda marcada es ' + boardOptionsAvailables[random]);
-        return;
-      }
-    });
+    const boardOptionsAvailables = CELLS_LIST.filter(
+      (item) => board[item] === null
+    );
+    const random = randomNumberInRange(0, boardOptionsAvailables.length - 1);
+    setBoard({ ...board, [boardOptionsAvailables[random]]: 10 });
   };
 
   const randomNumberInRange = (min, max) => {
@@ -60,23 +47,22 @@ const Pc = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  useEffect(() => {
-    CheckWinner(count, board, setWinner, isOver);
-  }, [board]);
+  // useEffect(() => {
+  //   CheckWinner(count, board, setWinner, isOver);
+  // }, [board]);
 
   return (
     <>
       <div className="flex">
         <div className="containerTateti">
-          <Card board={board} text={'a1'} onClick={() => handleClick('a1')} />
-          <Card board={board} text={'a2'} onClick={() => handleClick('a2')} />
-          <Card board={board} text={'a3'} onClick={() => handleClick('a3')} />
-          <Card board={board} text={'b1'} onClick={() => handleClick('b1')} />
-          <Card board={board} text={'b2'} onClick={() => handleClick('b2')} />
-          <Card board={board} text={'b3'} onClick={() => handleClick('b3')} />
-          <Card board={board} text={'c1'} onClick={() => handleClick('c1')} />
-          <Card board={board} text={'c2'} onClick={() => handleClick('c2')} />
-          <Card board={board} text={'c3'} onClick={() => handleClick('c3')} />
+          {CELLS_LIST.map((item) => (
+            <Card
+              board={board}
+              text={item}
+              onClick={() => handleClick(item)}
+              key={item}
+            />
+          ))}
         </div>
       </div>
       <div className="footer">
@@ -115,7 +101,7 @@ const Pc = () => {
               currentPlayer,
               isOver,
               setBoard,
-              emptyBoard
+              EMPTY_BOARD
             );
           }}
         >
