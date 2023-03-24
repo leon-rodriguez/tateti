@@ -78,7 +78,7 @@ const Human = () => {
           </span>
         </div>
         <button
-          className="playAgain"
+          className="playAgainHuman"
           onClick={() => {
             RestartGame(
               setWinner,

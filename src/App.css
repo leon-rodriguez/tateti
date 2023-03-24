@@ -116,12 +116,40 @@
 .playAgain {
   background-color: transparent;
   border: 3px solid #aa8f66;
-  margin: 0 auto;
   width: 130px;
   height: 70px;
   color: #000;
   transition: 0.3s ease all;
   cursor: pointer;
+}
+
+.playAgainHuman {
+  background-color: transparent;
+  border: 3px solid #aa8f66;
+  width: 130px;
+  height: 70px;
+  color: #000;
+  transition: 0.3s ease all;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.a {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.b {
+  color: #aa8f66;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button:hover {
@@ -158,6 +186,21 @@ button:hover {
 }
 
 @media screen and (max-width: 426px) {
+  .item1 {
+    order: 10;
+  }
+
+  .item2 {
+    order: 1;
+  }
+
+  .item3 {
+    order: 20;
+  }
+  .a {
+    grid-template-columns: none;
+    grid-template-rows: 1fr 1fr;
+  }
   .containerTateti {
     height: 340px;
     width: 90%;

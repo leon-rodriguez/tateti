@@ -10,10 +10,10 @@ import { CELLS_LIST } from './constants';
 // ['a1', 'b2', 'c3'],
 // ['a3', 'b2', 'c1'],
 
-const subsistence = (board, randomNumberInRange) => {
+const subsistence = (board, randomNumberInRange, count) => {
   for (let i = 0; i < 8; i++) {
     let winnerCase = winnerCases[i];
-    //alguien gana
+    // no perder
     if (
       board[winnerCase[0]] + board[winnerCase[1]] + board[winnerCase[2]] ===
       20
@@ -31,7 +31,7 @@ const subsistence = (board, randomNumberInRange) => {
   }
   for (let i = 0; i < 8; i++) {
     let winnerCase = winnerCases[i];
-    //alguien gana
+    // ganar
     if (
       board[winnerCase[0]] + board[winnerCase[1]] + board[winnerCase[2]] ===
       2
@@ -41,6 +41,38 @@ const subsistence = (board, randomNumberInRange) => {
       }
       if (board[winnerCase[1]] === null) {
         return winnerCase[1];
+      }
+      if (board[winnerCase[2]] === null) {
+        return winnerCase[2];
+      }
+    }
+  }
+
+  // primera jugada
+  if (count === 1) {
+    const firstOptions = ['a1', 'a3', 'c1', 'c3', 'b2'];
+    const firstOptionsAvailables = [];
+    for (let i = 0; i < firstOptions.length; i++) {
+      if (board[firstOptions[i]] === null) {
+        firstOptionsAvailables.push(firstOptions[i]);
+      }
+    }
+    const randomFirst = randomNumberInRange(
+      0,
+      firstOptionsAvailables.length - 1
+    );
+    return firstOptionsAvailables[randomFirst];
+  }
+
+  // posicionarse bien
+  for (let i = 0; i < 8; i++) {
+    let winnerCase = winnerCases[i];
+    if (
+      board[winnerCase[0]] + board[winnerCase[1]] + board[winnerCase[2]] ===
+      10
+    ) {
+      if (board[winnerCase[0]] === null) {
+        return winnerCase[0];
       }
       if (board[winnerCase[2]] === null) {
         return winnerCase[2];

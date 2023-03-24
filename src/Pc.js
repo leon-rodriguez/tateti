@@ -14,6 +14,8 @@ const Pc = () => {
   let currentPlayer = useRef(1);
   let count = useRef(0);
   const isOver = useRef(false);
+  const [humanScore, setHumanScore] = useState(0);
+  const [iaScore, setIaScore] = useState(0);
 
   const handleClick = (cell) => {
     if (!isOver.current && board[cell] == null) {
@@ -31,9 +33,17 @@ const Pc = () => {
     if (result) {
       setWinner(result);
       isOver.current = true;
+      switch (result) {
+        case 'X':
+          setHumanScore(humanScore + 1);
+          break;
+        case 'O':
+          setIaScore(iaScore + 1);
+          break;
+      }
     }
     if (currentPlayer.current === 2 && !isOver.current) {
-      const iaCell = subsistence(board, randomNumberInRange);
+      const iaCell = subsistence(board, randomNumberInRange, count.current);
       setBoard({ ...board, [iaCell]: 10 });
       count.current += 1;
       currentPlayer.current = 1;
@@ -73,38 +83,32 @@ const Pc = () => {
           {winner == 'Empate'
             ? 'Empate'
             : winner == 'X'
-            ? 'El ganador es:'
+            ? 'Ganaste!'
             : winner == 'O'
-            ? 'El ganador es:'
+            ? 'Perdiste :('
             : ''}
-          <span
-            className="winnerMark"
-            style={{ color: winner == 'X' ? '#ba3b46' : '#01368d' }}
-          >
-            {winner == 'Empate'
-              ? ''
-              : winner == 'X'
-              ? 'Humano'
-              : winner == 'O'
-              ? 'IA'
-              : ''}
-          </span>
         </div>
-        <button
-          className="playAgain"
-          onClick={() => {
-            RestartGame(
-              setWinner,
-              count,
-              currentPlayer,
-              isOver,
-              setBoard,
-              EMPTY_BOARD
-            );
-          }}
-        >
-          Jugar de vuelta
-        </button>
+        <div className="a">
+          <div className="b item1">Vos: {humanScore}</div>
+          <div className="c">
+            <button
+              className="playAgain item2"
+              onClick={() => {
+                RestartGame(
+                  setWinner,
+                  count,
+                  currentPlayer,
+                  isOver,
+                  setBoard,
+                  EMPTY_BOARD
+                );
+              }}
+            >
+              Jugar de vuelta
+            </button>
+          </div>
+          <div className="b item3">IA: {iaScore}</div>
+        </div>
       </div>
     </>
   );
