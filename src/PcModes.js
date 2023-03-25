@@ -52,6 +52,10 @@ const subsistence = (board, randomNumberInRange, count) => {
   if (count === 1) {
     const firstOptions = ['a1', 'a3', 'c1', 'c3', 'b2'];
     const firstOptionsAvailables = [];
+    //checkear si la casilla del medio es ocupada
+    if (board[firstOptions[4]] === null) {
+      return firstOptions[4];
+    }
     for (let i = 0; i < firstOptions.length; i++) {
       if (board[firstOptions[i]] === null) {
         firstOptionsAvailables.push(firstOptions[i]);
