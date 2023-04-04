@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Card from './Card';
-import RestartGame from './RestartGame';
+import { RestartGame } from './RestartGame';
 import CheckWinner from './CheckWinner';
 import { EMPTY_BOARD, CELLS_LIST } from './constants';
 

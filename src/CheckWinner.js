@@ -17,11 +17,11 @@ const CheckWinner = (board, count) => {
     ) {
       return 'O';
     }
-    // caso de empate
-    if (count.current == 9) {
-      // console.log('empate');
-      return 'Empate';
-    }
+  }
+  //caso empate
+  if (count.current == 9) {
+    console.log('empate');
+    return 'Empate';
   }
 };
 
